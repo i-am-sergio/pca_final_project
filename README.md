@@ -5,6 +5,10 @@
     ```bash
     pip install pandas scikit-learn openpyxl
     ```
+    or
+    ```bash
+    pip install -r requirements.txt
+    ```
     - C++
     ```bash
     sudo apt install libvtk9-dev # debian/ubuntu
