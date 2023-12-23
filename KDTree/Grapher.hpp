@@ -18,28 +18,35 @@
 #include <vtkAxesActor.h>
 #include <vtkStdString.h>
 #include <vtkAppendPolyData.h>
+#include <vtkLineSource.h>
 
 namespace graph {
 
     class Grapher {
+        
         protected:
-            vtkNew<vtkRenderer> renderer;
-            vtkNew<vtkRenderWindow> renderWindow;
-            vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
-            vtkNew<vtkNamedColors> colors;
-            vtkNew<vtkAxesActor> axes;
-            vtkNew<vtkOrientationMarkerWidget> widget;
-            vtkSmartPointer<vtkOrientationMarkerWidget> widget2;
+            vtkSmartPointer<vtkRenderer> renderer;
+            vtkSmartPointer<vtkRenderWindow> renderWindow;
+            vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor;
+            vtkSmartPointer<vtkAxesActor> axes;
+            vtkSmartPointer<vtkNamedColors> colors;
+            vtkSmartPointer<vtkOrientationMarkerWidget> widget;
             vtkSmartPointer<vtkPoints> points;
             
         public:
             Grapher() { 
+                renderer = vtkSmartPointer<vtkRenderer>::New();
+                renderWindow = vtkSmartPointer<vtkRenderWindow>::New();
+                renderWindowInteractor = vtkSmartPointer<vtkRenderWindowInteractor>::New();
                 points = vtkSmartPointer<vtkPoints>::New(); 
-                // axes->SetShaftTypeToCylinder();
-                axes->SetXAxisLabelText("X");
-                axes->SetYAxisLabelText("Y");
-                axes->SetZAxisLabelText("Z");
+                widget = vtkSmartPointer<vtkOrientationMarkerWidget>::New();
+                colors = vtkSmartPointer<vtkNamedColors>::New();
+                axes = vtkSmartPointer<vtkAxesActor>::New();
+                DrawLine(-10.0, 0.0, 0.0, 10.0, 0.0, 0.0, "Red"); // X
+                DrawLine(0.0, -10.0, 0.0, 0.0, 10.0, 0.0, "Green"); // Y
+                DrawLine(0.0, 0.0, -10.0, 0.0, 0.0, 10.0, "Blue"); // Z
             }
+
             ~Grapher() { }
 
             void AddPoint(double x, double y, double z)
@@ -60,10 +67,24 @@ namespace graph {
 
                 vtkNew<vtkActor> pointActor;
                 pointActor->SetMapper(mapper);
-                pointActor->GetProperty()->SetColor(colors->GetColor3d("GreenYellow").GetData());
+                pointActor->GetProperty()->SetColor(colors->GetColor3d("Yellow").GetData());
                 pointActor->GetProperty()->SetPointSize(2);
 
                 renderer->AddActor(pointActor);
+            }
+
+            void DrawLine(double x1, double y1, double z1, double x2, double y2, double z2, const char* color) {
+                auto lineSource = vtkSmartPointer<vtkLineSource>::New();
+                lineSource->SetPoint1(x1, y1, z1);
+                lineSource->SetPoint2(x2, y2, z2);
+
+                auto lineMapper = vtkSmartPointer<vtkPolyDataMapper>::New();
+                lineMapper->SetInputConnection(lineSource->GetOutputPort());
+                
+                auto lineActor = vtkSmartPointer<vtkActor>::New();
+                lineActor->SetMapper(lineMapper);
+                lineActor->GetProperty()->SetColor(colors->GetColor3d(color).GetData());
+                renderer->AddActor(lineActor);
             }
 
             void ShowWindow() 
