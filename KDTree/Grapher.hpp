@@ -19,10 +19,6 @@
 #include <vtkStdString.h>
 #include <vtkAppendPolyData.h>
 
-#include <array>
-#include <vector>
-using namespace std;
-
 namespace graph {
 
     class Grapher {
@@ -35,7 +31,6 @@ namespace graph {
             vtkNew<vtkOrientationMarkerWidget> widget;
             vtkSmartPointer<vtkOrientationMarkerWidget> widget2;
             vtkSmartPointer<vtkPoints> points;
-            vector<vtkSmartPointer<vtkPolyData>> cubes;
             
         public:
             Grapher() { 
