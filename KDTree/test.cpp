@@ -49,8 +49,19 @@ void test3(){
     grapher.ShowWindow();
 }
 
+void test4(){
+    CSVReader reader("pca_result.csv");
+    vector<Point3D> data = reader.readCSV();
+    
+    Grapher grapher;
+    for (auto& row : data)
+        grapher.AddPoint(row[0], row[1], row[2]);
+    grapher.DrawPoints();
+    grapher.ShowWindow();
+}
+
 int main(){
-    test3();
+    test4();
 
     return 0;
 }
