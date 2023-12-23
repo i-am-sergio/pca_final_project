@@ -19,7 +19,6 @@ def main():
         
         csv_path = os.path.join(folder_path, 'pca_result.csv')
         pca_with_patient_data = pd.concat([transformed_data_pca,processed_data[['Patient ID', 'All Data']]], axis=1)
-        #pca_with_patient_data = pd.concat([processed_data[['Patient ID', 'All Data']], transformed_data_pca], axis=1)
         pca_with_patient_data.to_csv(csv_path, index=False, header=None)
         print("\nDatos del PCA junto con 'Patient ID' y 'All Data':")
         print(pca_with_patient_data)
