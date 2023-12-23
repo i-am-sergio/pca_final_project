@@ -23,8 +23,7 @@ class ExcelDataProcessor:
             'Basophils',
             'Eosinophils',
             'Monocytes',
-            'Proteina C reativa mg/dL',
-            'Patient ID'
+            'Proteina C reativa mg/dL'
         ]
 
         # Reemplazar 'negative' por 0 y 'positive' por 1 en 'SARS-Cov-2 exam result'

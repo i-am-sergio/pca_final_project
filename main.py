@@ -21,9 +21,9 @@ def main():
         transformed_data_pca.to_csv(csv_path, index=False, header=None)
 
         #Lo de abajo hace que se agreguedos veces la columna 'Patient ID' y solo una 'All Data'
-        #pca_with_patient_data = pd.concat([processed_data[['Patient ID', 'All Data']], transformed_data_pca], axis=1)
+        pca_with_patient_data = pd.concat([processed_data[['Patient ID', 'All Data']], transformed_data_pca], axis=1)
         print("\nDatos del PCA junto con 'Patient ID' y 'All Data':")
-        print(transformed_data_pca)
+        print(pca_with_patient_data)
         print(f"\nDatos del PCA guardados en '{csv_path}'.")
 
 if __name__ == "__main__":
