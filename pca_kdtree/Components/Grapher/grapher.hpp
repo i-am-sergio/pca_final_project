@@ -38,7 +38,7 @@ namespace graph
     public:
         Grapher();
         ~Grapher();
-        void AddPoint(double x, double y, double z);
+        void AddPoint(long double x, long double y, long double z);
         void DrawPoints();
         void DrawLine(double x1, double y1, double z1, double x2, double y2, double z2, const char *color);
         void ShowWindow();

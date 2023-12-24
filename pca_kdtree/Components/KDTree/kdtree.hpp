@@ -20,7 +20,17 @@ namespace kdt
         KDTree() : root(nullptr) {}
         ~KDTree()
         {
-            delete root;
+            clear(root);
+        }
+
+        void clear(Node *node)
+        {
+            if (node)
+            {
+                clear(node->left);
+                clear(node->right);
+                delete node;
+            }
             root = nullptr;
         }
         void insert(Node point)

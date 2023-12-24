@@ -22,7 +22,7 @@ find_package(VTK COMPONENTS
 
 # Definir variables para archivos y directorios
 set(SOURCES
-  "${CMAKE_CURRENT_LIST_DIR}/test.cpp"
+  "${CMAKE_CURRENT_LIST_DIR}/main.cpp"
   "${CMAKE_CURRENT_LIST_DIR}/Components/KDTree/kdtree.hpp"
   "${CMAKE_CURRENT_LIST_DIR}/Components/Grapher/grapher.hpp"
   "${CMAKE_CURRENT_LIST_DIR}/Components/Grapher/grapher.cpp"
@@ -30,11 +30,20 @@ set(SOURCES
   "${CMAKE_CURRENT_LIST_DIR}/Components/Node/node.cpp"
   "${CMAKE_CURRENT_LIST_DIR}/Components/Reader/reader.hpp"
   "${CMAKE_CURRENT_LIST_DIR}/Components/Reader/reader.cpp"
+  "${CMAKE_CURRENT_LIST_DIR}/Components/Tester/tester.cpp"
 )
+
+set(GTEST_INCLUDE_DIR ${CMAKE_CURRENT_LIST_DIR}/Components/googletest/include)
+set(GMOCK_INCLUDE_DIR ${CMAKE_CURRENT_LIST_DIR}/Components/googletest/include)
+set(GTEST_LIB_DIR ${CMAKE_CURRENT_LIST_DIR}/Components/googletest/lib)
+set(GMOCK_LIB_DIR ${CMAKE_CURRENT_LIST_DIR}/Components/googletest/lib)
+
 
 # Añadir el directorio de inclusión
 set(INCLUDE_DIR ${CMAKE_CURRENT_LIST_DIR})
 include_directories(${INCLUDE_DIR})
+include_directories(${GTEST_INCLUDE_DIR})
+include_directories(${GMOCK_INCLUDE_DIR})
 
 # Copiar archivos necesarios
 configure_file(${CMAKE_SOURCE_DIR}/pca_result.csv ${CMAKE_BINARY_DIR}/pca_result.csv COPYONLY)
@@ -43,7 +52,13 @@ configure_file(${CMAKE_SOURCE_DIR}/pca_result.csv ${CMAKE_BINARY_DIR}/pca_result
 add_executable(pca_kdtree ${SOURCES})
 
 # Enlazar las bibliotecas de VTK
-target_link_libraries(pca_kdtree PRIVATE ${VTK_LIBRARIES})
+target_link_libraries(pca_kdtree PRIVATE
+    ${VTK_LIBRARIES}
+    ${GTEST_LIB_DIR}/libgtest.a
+    ${GTEST_LIB_DIR}/libgtest_main.a
+    ${GMOCK_LIB_DIR}/libgmock.a
+    ${GMOCK_LIB_DIR}/libgmock_main.a
+)
 
 # Inicialización automática de módulos VTK
 vtk_module_autoinit(

@@ -34,9 +34,9 @@ namespace rdr
             }
             if (values.size() >= 5)
             {
-                std::vector<double> pointValues;
+                std::vector<long double> pointValues;
                 for (int i = 0; i < 3; ++i)
-                    pointValues.push_back(stod(values[i]));
+                    pointValues.push_back(stold(values[i]));
                 std::string pointId = values[3];
                 std::string data = values[4];
                 if (!data.empty() && data.front() == '\"' && data.back() == '\"')

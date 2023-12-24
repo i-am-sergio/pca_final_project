@@ -19,7 +19,7 @@ namespace graph
 
     Grapher::~Grapher() {}
 
-    void Grapher::AddPoint(double x, double y, double z)
+    void Grapher::AddPoint(long double x, long double y, long double z)
     {
         points->InsertNextPoint(x, y, z);
     }

@@ -3,12 +3,12 @@
 #include <iostream>
 #include <vector>
 
-using Point3D = std::vector<double>;
+using Point3D = std::vector<long double>;
 
 class Node
 {
 public:
-    using Point3D = std::vector<double>;
+    using Point3D = std::vector<long double>;
     std::string PointID, data;
     Point3D point;
     Node *left;
