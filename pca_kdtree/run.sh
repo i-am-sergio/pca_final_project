@@ -6,11 +6,14 @@ cd build && cmake .. && make && ./pca_kdtree
 if [[ "$OSTYPE" == "linux-gnu"* ]]; then
     # Comandos para Linux
     mkdir -p build
-    cd build && cmake .. && make && ./pca_kdtree
+    #cd build && cmake .. && make && ./pca_kdtree
+    cd build && cmake -DBUILD_EXAMPLE=ON .. &&  cmake --build . && ./pca_kdtree
 elif [[ "$OSTYPE" == "msys"* ]]; then
     # Comandos para Windows
     mkdir build
     cd build
-    cmake ..
-    make
+    #cmake ..
+    cmake -G "MinGW Makefiles" -DBUILD_EXAMPLE=ON ..
+    #make
+    cmake --build .
     ./pca_kdtree

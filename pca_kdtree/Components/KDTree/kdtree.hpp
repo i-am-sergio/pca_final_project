@@ -1,7 +1,7 @@
 #ifndef KDTREE_HPP
 #define KDTREE_HPP
 
-#include "Node.hpp"
+#include "../Node/node.hpp"
 #include <iostream>
 #include <vector>
 #include <cmath>
@@ -29,18 +29,18 @@ namespace kdt
         }
         bool search(Point3D point)
         {
-            return searchRecursive(root, point);
+            return searchRecursivo(root, point);
         }
         void print()
         {
             printRecursive(root);
         }
-        vector<Point3D> searchKNN(Point3D point, int k)
+        std::vector<Point3D> searchKNN(Point3D point, int k)
         {
             k = k + 1;
-            priority_queue<pair<double, Node *>> nearestNeighbors;
+            std::priority_queue<std::pair<double, Node *>> nearestNeighbors;
             KNNRecursive(root, point, k, nearestNeighbors, 0);
-            vector<Point3D> kNeighbors;
+            std::vector<Point3D> kNeighbors;
             while (!nearestNeighbors.empty())
             {
                 kNeighbors.push_back(nearestNeighbors.top().second->point);
@@ -50,24 +50,15 @@ namespace kdt
                 kNeighbors.pop_back();
             return kNeighbors;
         }
-
-        priority_queue<pair<double, Node *>> searchKNN2(Point3D point, int k)
+        std::priority_queue<std::pair<double, Node *>> searchKNN2(Point3D point, int k)
         {
             k = k + 1;
-            priority_queue<pair<double, Node *>> nearestNeighbors;
+            std::priority_queue<std::pair<double, Node *>> nearestNeighbors;
             KNNRecursive(root, point, k, nearestNeighbors, 0);
             return nearestNeighbors;
         }
 
     protected:
-        /*
-         * `insertRecursivo` es una función recursiva que inserta un punto en un KDTree.
-         * @param current: el nodo actual en el que se encuentra la recursión.
-         * @param point: el punto a insertar.
-         * @param depth: la profundidad actual en la que se encuentra la recursión.
-         * @return: el nodo actualizado.
-         * @complexity: O(log(n))
-         */
         Node *insertRecursivo(Node *current, Node node, int depth = 0)
         {
             if (current == nullptr)
@@ -79,8 +70,7 @@ namespace kdt
                 current->right = insertRecursivo(current->right, node, depth + 1);
             return current;
         }
-
-        bool searchRecursive(Node *node, Point3D point, int depth = 0)
+        bool searchRecursivo(Node *node, Point3D point, int depth = 0)
         {
             if (node == nullptr)
                 return false;
@@ -88,16 +78,15 @@ namespace kdt
                 return true;
             int axis = depth % dimension;
             if (point[axis] < node->point[axis])
-                return searchRecursive(node->left, point, depth + 1);
-            return searchRecursive(node->right, point, depth + 1);
+                return searchRecursivo(node->left, point, depth + 1);
+            return searchRecursivo(node->right, point, depth + 1);
         }
-
         void printRecursive(Node *node, int depth = 0)
         {
             if (node == nullptr)
                 return;
             printRecursive(node->left, depth + 1);
-            cout << node->point << " ";
+            std::cout << node->point << " ";
             printRecursive(node->right, depth + 1);
         }
 
@@ -105,22 +94,10 @@ namespace kdt
         {
             double distancia = 0.0;
             for (int i = 0; i < p1.size(); i++)
-            {
                 distancia += pow(p1[i] - p2[i], 2);
-            }
             return sqrt(distancia);
         }
-
-        /*
-         *`KNNRecursive` es una función recursiva que realiza una búsqueda de k vecinos más cercanos en un KDTree.
-         * @param node: el nodo actual en el que se encuentra la recursión.
-         * @param point: el punto de consulta.
-         * @param k: el número de vecinos más cercanos a encontrar.
-         * @param nearestNeighbors: una cola de prioridad que contiene los k vecinos más cercanos.
-         * @param depth: la profundidad actual en la que se encuentra la recursión.
-         * @return: void.
-         */
-        void KNNRecursive(Node *node, const Point3D &point, int k, priority_queue<pair<double, Node *>> &nearestNeighbors, int depth = 0)
+        void KNNRecursive(Node *node, const Point3D &point, int k, std::priority_queue<std::pair<double, Node *>> &nearestNeighbors, int depth = 0)
         {
             if (node == nullptr)
                 return;
@@ -146,18 +123,8 @@ namespace kdt
                     KNNRecursive(node->left, point, k, nearestNeighbors, depth + 1);
             }
         }
-
-        /*
-         * `KNNRecursive2` es una función recursiva que realiza una búsqueda de k vecinos más cercanos en un KDTree.
-         * @param current: el nodo actual en el que se encuentra la recursión.
-         * @param point: el punto de consulta.
-         * @param k: el número de vecinos más cercanos a encontrar.
-         * @param nearestNeighbors: una cola de prioridad que contiene los k vecinos más cercanos.
-         * @param depth: la profundidad actual en la que se encuentra la recursión.
-         * @return: void.
-         */
         void KNNRecursive2(Node *current, const Point3D &point, int k,
-                           priority_queue<pair<double, Node *>> &nearestNeighbors, int depth = 0)
+                           std::priority_queue<std::pair<double, Node *>> &nearestNeighbors, int depth = 0)
         {
             if (current == nullptr)
                 return;
@@ -184,5 +151,4 @@ namespace kdt
     };
 
 }
-
 #endif // KDTREE_HPP
