@@ -5,9 +5,11 @@
 #include <sstream>
 #include <vector>
 
-using namespace std;
+
 
 namespace rdr {
+    
+    using namespace std;
 
     class CSVReader {
         public:
@@ -28,9 +30,12 @@ namespace rdr {
                     stringstream ss(line);
                     string value;
 
+                    int i = 0;
                     while (getline(ss, value, ',')) {
                         // Convierte cada valor de cadena a un double y lo agrega a la fila
                         row.push_back(stod(value));
+                        i++;
+                        if (i == 3) break;
                     }
 
                     // Agrega la fila al vector bidimensional

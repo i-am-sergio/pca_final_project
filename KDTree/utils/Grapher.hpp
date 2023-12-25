@@ -42,9 +42,9 @@ namespace graph {
                 widget = vtkSmartPointer<vtkOrientationMarkerWidget>::New();
                 colors = vtkSmartPointer<vtkNamedColors>::New();
                 axes = vtkSmartPointer<vtkAxesActor>::New();
-                DrawLine(-10.0, 0.0, 0.0, 10.0, 0.0, 0.0, "Red"); // X
-                DrawLine(0.0, -10.0, 0.0, 0.0, 10.0, 0.0, "Green"); // Y
-                DrawLine(0.0, 0.0, -10.0, 0.0, 0.0, 10.0, "Blue"); // Z
+                DrawLine(-20.0, 0.0, 0.0, 20.0, 0.0, 0.0, "Red"); // X
+                DrawLine(0.0, -20.0, 0.0, 0.0, 20.0, 0.0, "Green"); // Y
+                DrawLine(0.0, 0.0, -20.0, 0.0, 0.0, 20.0, "Blue"); // Z
             }
 
             ~Grapher() { }
