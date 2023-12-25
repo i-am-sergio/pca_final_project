@@ -1,5 +1,5 @@
 __pycache__
-.vscode
-/pca_kdtree/test
-/pca_kdtree/build
-/pca_kdtree/pca_result.csv
+/KDTree/test
+/KDTree/build
+/KDTree/pca_result.csv
+/PCA/PCA_barplot.png

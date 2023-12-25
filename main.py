@@ -4,7 +4,7 @@ import pandas as pd
 import os
 
 def main():
-    file_path = 'covid_DB.xlsx'
+    file_path = 'data/covid_DB.xlsx'
     processor = ExcelDataProcessor(file_path)
     processed_data = processor.read_excel_and_process()
     
