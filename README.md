@@ -17,9 +17,12 @@
     sudo dnf install vtk-devel # fedora
     ```
 
+* **Only Run Project**
+    ```bash
+    python runner.py
+    ```
 
-
-* **To Execute Project**
+* **To Execute Project step by step**
     ```bash
     python main.py
     ```

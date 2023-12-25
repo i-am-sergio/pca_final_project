@@ -1,6 +1,6 @@
-#include "KDTree.hpp"
-#include "Reader.hpp"
-#include "Grapher.hpp"
+#include "includes/KDTree.hpp"
+#include "utils/Reader.hpp"
+#include "utils/Grapher.hpp"
 
 #include <iostream>
 #include <vector>
