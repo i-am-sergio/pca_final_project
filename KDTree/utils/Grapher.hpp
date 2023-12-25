@@ -19,6 +19,7 @@
 #include <vtkStdString.h>
 #include <vtkAppendPolyData.h>
 #include <vtkLineSource.h>
+#include <vtkSphereSource.h>
 
 namespace graph {
 
@@ -85,6 +86,22 @@ namespace graph {
                 lineActor->SetMapper(lineMapper);
                 lineActor->GetProperty()->SetColor(colors->GetColor3d(color).GetData());
                 renderer->AddActor(lineActor);
+            }
+
+            void DrawSphere(double x, double y, double z, double radius, const char* color) {
+                auto sphereSource = vtkSmartPointer<vtkSphereSource>::New();
+                sphereSource->SetCenter(x, y, z);
+                sphereSource->SetRadius(radius);
+                sphereSource->Update();
+
+                auto mapper = vtkSmartPointer<vtkPolyDataMapper>::New();
+                mapper->SetInputConnection(sphereSource->GetOutputPort());
+
+                auto actor = vtkSmartPointer<vtkActor>::New();
+                actor->SetMapper(mapper);
+                actor->GetProperty()->SetColor(colors->GetColor3d(color).GetData());
+                actor->GetProperty()->SetOpacity(0.3);
+                renderer->AddActor(actor);
             }
 
             void ShowWindow() 

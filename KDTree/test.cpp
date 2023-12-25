@@ -29,22 +29,17 @@ void test2(){
     KDTree<3> kdtree;
     for (auto& row : data)
         kdtree.insert(row);
-    kdtree.print();
-    cout<<"Search: "<<boolalpha<<kdtree.search({6.681046678649641,-0.041085165257433574,0.023819628573979304})<<"\n";
+    // kdtree.print();
+    cout<<"Search: "<<boolalpha<<kdtree.search({-0.008428919807470295,0.04253583034486411,0.2300451309688243})<<"\n";
 }
 
 void test3(){
+    CSVReader reader("pca_result.csv");
+    vector<Point3D> data = reader.readCSV();
+    
     Grapher grapher;
-    grapher.AddPoint(1,2,3);
-    grapher.AddPoint(4,5,6);
-    grapher.AddPoint(7,8,9);
-    grapher.AddPoint(10,11,12);
-    grapher.AddPoint(13,14,15);
-    grapher.AddPoint(16,17,18);
-    grapher.AddPoint(19,20,21);
-    grapher.AddPoint(22,23,24);
-    grapher.AddPoint(25,26,27);
-    grapher.AddPoint(28,29,40);
+    for (auto& row : data)
+        grapher.AddPoint(row[0], row[1], row[2]);
     grapher.DrawPoints();
     grapher.ShowWindow();
 }
@@ -57,7 +52,9 @@ void test4(){
     for (auto& row : data)
         grapher.AddPoint(row[0], row[1], row[2]);
     grapher.DrawPoints();
+    grapher.DrawSphere(0.0, 0.0, 0.0, 5.0, "SkyBlue");
     grapher.ShowWindow();
+
 }
 
 int main(){

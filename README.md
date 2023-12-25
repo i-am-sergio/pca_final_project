@@ -5,7 +5,6 @@
     ```bash
     pip install pandas scikit-learn openpyxl
     ```
-    or
     ```bash
     pip install -r requirements.txt
     ```

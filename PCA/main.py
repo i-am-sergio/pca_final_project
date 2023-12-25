@@ -5,6 +5,7 @@ from sklearn.impute import SimpleImputer
 import seaborn as sns
 import matplotlib.pyplot as plt
 import os
+from numpy.linalg import eig
 
 df = pd.read_excel('../data/covid_DB.xlsx')
 
@@ -34,6 +35,17 @@ print(pca_data_imputed.head())
 ss = StandardScaler()
 pca_data_imputed[selected_columns] = ss.fit_transform(pca_data_imputed[selected_columns])
 print(pca_data_imputed.head())
+
+
+# covarianza
+matrix_cov = pca_data_imputed[selected_columns].cov()
+print( "COV\n" , matrix_cov)
+
+# eigenvalues and eigenvectors
+eigenvalues, eigenvectors = eig(matrix_cov)
+print("Eigenvalues\n", eigenvalues)
+print("Eigenvectors\n", eigenvectors)
+
 
 pca3 = PCA(n_components=3, random_state=42)
 pca_3 = pca3.fit_transform(pca_data_imputed[selected_columns])
