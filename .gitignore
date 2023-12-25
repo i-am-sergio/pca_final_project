@@ -2,3 +2,4 @@ __pycache__
 /KDTree/test
 /KDTree/build
 /KDTree/pca_result.csv
+/PCA/PCA_barplot.png
