@@ -1,4 +1,5 @@
 __pycache__
+.vscode
 /KDTree/test
 /KDTree/build
 /KDTree/pca_result.csv

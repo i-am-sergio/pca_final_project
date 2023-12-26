@@ -12,7 +12,7 @@ def main():
         pca_calculator = PCACalculator(processed_data)
         transformed_data_pca = pca_calculator.apply_pca()
 
-        folder_path = 'KDTree/'
+        folder_path = 'pca_kdtree/'
 
         if not os.path.exists(folder_path):
             os.makedirs(folder_path)
