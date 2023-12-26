@@ -20,17 +20,18 @@ find_package(VTK COMPONENTS
   RenderingOpenGL2
 )
 
-# Fedora - sergio
-# set(GTEST_INCLUDE_DIR /usr/lib/.build-id/4f/80075776864ad2057e2ddac34f016ce400459c)
-# set(GTEST_LIB_DIR /usr/lib64)
-# include_directories(${GTEST_INCLUDE_DIR})
-
+# Portable: copy binaries .a to googletest/include/lib folder
 set(GTEST_INCLUDE_DIR ${CMAKE_CURRENT_LIST_DIR}/googletest/include)
 set(GMOCK_INCLUDE_DIR ${CMAKE_CURRENT_LIST_DIR}/googletest/include)
 set(GTEST_LIB_DIR ${CMAKE_CURRENT_LIST_DIR}/googletest/lib)
 set(GMOCK_LIB_DIR ${CMAKE_CURRENT_LIST_DIR}/googletest/lib)
 include_directories(${GTEST_INCLUDE_DIR})
 include_directories(${GMOCK_INCLUDE_DIR})
+
+# Fedora: sudo dnf install gtest
+set(GTEST_LIBRARY "/usr/lib64/libgtest.so.1.13.0")
+set(GTEST_MAIN_LIBRARY "/usr/lib64/libgtest_main.so.1.13.0")
+# ------
 include_directories(${INCLUDE_DIR})
 
 set(CMAKE_NINJA_FORCE_RESPONSE_FILE "ON" CACHE BOOL "Force Ninja to use response files.")
@@ -43,6 +44,7 @@ add_executable(pca_kdtree
               includes/KDTree.hpp 
               utils/Reader.hpp 
               utils/Grapher.hpp
+              utils/Tester.hpp
               test.cpp
 )
 
@@ -54,12 +56,14 @@ target_link_libraries(pca_kdtree PRIVATE
     ${GMOCK_LIB_DIR}/libgmock_main.a
 )
 
-# # Fedora - sergio
+# Fedora --------------------------------
 # target_link_libraries(pca_kdtree PRIVATE
 #     ${VTK_LIBRARIES}
-#     ${GTEST_LIB_DIR}/libgtest.so.1.13.0
-#     ${GTEST_LIB_DIR}/libgtest_main.so.1.13.0
+#     ${GTEST_LIBRARY} 
+#     ${GTEST_MAIN_LIBRARY}
 # )
+# target_include_directories(pca_kdtree PRIVATE "/usr/src/googletest/googletest/include") # ruta de los encabezados de Google Test
+# --------------------------------------
 
 vtk_module_autoinit(
   TARGETS pca_kdtree
