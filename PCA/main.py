@@ -99,6 +99,7 @@ def draw_barplot(explain_varianza, file_name):
     for p in ax.patches:
         ax.annotate(f'{p.get_height():.2f}', (p.get_x() + p.get_width() / 2., p.get_height()),
                     ha='center', va='center', xytext=(0, 10), textcoords='offset points', fontsize=10)
+    ax.set_title(f"Explained Variance for {file_name}")
     plt.savefig(file_name, dpi=300, bbox_inches='tight', pad_inches=0.1, format='png')
     plt.show()
 
