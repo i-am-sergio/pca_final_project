@@ -19,6 +19,12 @@ find_package(VTK COMPONENTS
   RenderingGL2PSOpenGL2
   RenderingOpenGL2
 )
+
+# Fedora - sergio
+# set(GTEST_INCLUDE_DIR /usr/lib/.build-id/4f/80075776864ad2057e2ddac34f016ce400459c)
+# set(GTEST_LIB_DIR /usr/lib64)
+# include_directories(${GTEST_INCLUDE_DIR})
+
 set(GTEST_INCLUDE_DIR ${CMAKE_CURRENT_LIST_DIR}/googletest/include)
 set(GMOCK_INCLUDE_DIR ${CMAKE_CURRENT_LIST_DIR}/googletest/include)
 set(GTEST_LIB_DIR ${CMAKE_CURRENT_LIST_DIR}/googletest/lib)
@@ -40,7 +46,6 @@ add_executable(pca_kdtree
               test.cpp
 )
 
-target_link_libraries(pca_kdtree PRIVATE ${VTK_LIBRARIES})
 target_link_libraries(pca_kdtree PRIVATE
     ${VTK_LIBRARIES}
     ${GTEST_LIB_DIR}/libgtest.a
@@ -48,6 +53,14 @@ target_link_libraries(pca_kdtree PRIVATE
     ${GMOCK_LIB_DIR}/libgmock.a
     ${GMOCK_LIB_DIR}/libgmock_main.a
 )
+
+# # Fedora - sergio
+# target_link_libraries(pca_kdtree PRIVATE
+#     ${VTK_LIBRARIES}
+#     ${GTEST_LIB_DIR}/libgtest.so.1.13.0
+#     ${GTEST_LIB_DIR}/libgtest_main.so.1.13.0
+# )
+
 vtk_module_autoinit(
   TARGETS pca_kdtree
   MODULES ${VTK_LIBRARIES}
