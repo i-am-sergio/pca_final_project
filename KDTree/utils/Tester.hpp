@@ -109,4 +109,52 @@ TEST(KDTreeTest, Test_Delete_All)
     for (auto &row : data)
         EXPECT_FALSE(kdtree.search(row));
     std::cout << "Number of times kdtree.search(row) is true after node deletion: " << countTrue << std::endl;
+    kdtree.print();
+}
+
+TEST(KDTreeTest, Test_Delete)
+{
+    KDTree<3> kdtree;
+    kdtree.insert({1, 2, 3});
+    kdtree.insert({4, 5, 6});
+    kdtree.insert({7, 8, 9});
+    kdtree.insert({10, 11, 12});
+    kdtree.insert({13, 14, 15});
+    kdtree.insert({16, 17, 18});
+    EXPECT_NO_THROW(kdtree.deleteNode({4, 5, 6}));
+    EXPECT_NO_THROW(kdtree.deleteNode({10,11,12}));
+    EXPECT_NO_THROW(kdtree.deleteNode({16,17,18}));
+    EXPECT_NO_THROW(kdtree.deleteNode({1,2,3}));
+    EXPECT_NO_THROW(kdtree.deleteNode({7,8,9}));
+    EXPECT_NO_THROW(kdtree.deleteNode({13,14,15}));
+    EXPECT_FALSE(kdtree.search({4, 5, 6}));
+    EXPECT_FALSE(kdtree.search({10,11,12}));
+    EXPECT_FALSE(kdtree.search({16,17,18}));
+    EXPECT_FALSE(kdtree.search({1,2,3}));
+    EXPECT_FALSE(kdtree.search({7,8,9}));
+    EXPECT_FALSE(kdtree.search({13,14,15}));
+}
+
+TEST(KDTreeTest, Test_Insert_Delete_Search) {
+    KDTree<3> kdtree;
+
+    // Configura el generador de números aleatorios
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_real_distribution<double> dist(0.0, 100.0);
+
+    // Inserta 1000 datos aleatorios en el árbol
+    std::vector<std::vector<double>> dataPoints;
+    for (int i = 0; i < 1000; ++i) {
+        std::vector<double> point = {dist(gen), dist(gen), dist(gen)};
+        kdtree.insert(point);
+        dataPoints.push_back(point);
+    }
+
+    // Borra y busca en el árbol
+    for (const auto& point : dataPoints) {
+        EXPECT_NO_THROW(kdtree.deleteNode(point));
+        kdtree.print();
+        EXPECT_FALSE(kdtree.search(point));
+    }
 }

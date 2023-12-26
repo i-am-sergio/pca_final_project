@@ -338,7 +338,7 @@ namespace kdt
                     Node *min = findMin(root->left, cd);
                     copyPoint(root->point, min->point);
                     root->right = deleteNodeRec(root->left, min->point, depth + 1);
-                    root->left = nullptr;
+                    //root->left = nullptr;
                 }
                 else // If node to be deleted is leaf node
                 {
