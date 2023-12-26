@@ -23,9 +23,18 @@ namespace kdt
         }
         ~KDTree()
         {
-            delete root;
-            root = nullptr;
+            deleteTree(root);
         }
+        void deleteTree(Node *node)
+        {
+            if (node != nullptr)
+            {
+                deleteTree(node->left);
+                deleteTree(node->right);
+                delete node;
+            }
+        }
+
         Node *getNode()
         {
             return root;
@@ -68,7 +77,8 @@ namespace kdt
             return nearestNeighbors;
         }
 
-        void deleteNode(Point3D point){
+        void deleteNode(Point3D point)
+        {
             this->root = deleteNodeRec(this->root, point, 0);
         }
 
@@ -244,22 +254,25 @@ namespace kdt
             }
         }
 
-   //-------------------------------------------------------------------------------- 
-        bool arePointsSame(Point3D &point1, Point3D &point2){
+        //--------------------------------------------------------------------------------
+        bool arePointsSame(Point3D &point1, Point3D &point2)
+        {
             // Compare individual pointinate values
             for (int i = 0; i < (int)point1.size(); ++i)
                 if (point1[i] != point2[i])
                     return false;
             return true;
         }
-         
+
         // Copies point p2 to p1
-        void copyPoint(Point3D &p1, Point3D &p2){
-           for (int i=0; i<(int)p1.size(); i++)
-               p1[i] = p2[i];
+        void copyPoint(Point3D &p1, Point3D &p2)
+        {
+            for (int i = 0; i < (int)p1.size(); i++)
+                p1[i] = p2[i];
         }
 
-        Node *minNode(Node *x, Node *y, Node *z, int d){
+        Node *minNode(Node *x, Node *y, Node *z, int d)
+        {
             Node *res = x;
             if (y != nullptr && y->point[d] < res->point[d])
                 res = y;
@@ -268,58 +281,64 @@ namespace kdt
             return res;
         }
 
-        Node *findMinRec(Node *root, int d, unsigned depth){
+        Node *findMinRec(Node *root, int d, unsigned depth)
+        {
             // Base cases
             if (root == nullptr)
                 return nullptr;
-        
+
             // Current dimension is computed using current depth and total
             // dimensions (k)
             unsigned cd = depth % dimension;
-        
+
             // Compare point with root with respect to cd (Current dimension)
-            if (cd == d){
+            if (cd == d)
+            {
                 if (root->left == nullptr)
                     return root;
-                return findMinRec(root->left, d, depth+1);
+                return findMinRec(root->left, d, depth + 1);
             }
-        
+
             // If current dimension is different then minimum can be anywhere
             // in this subtree
             return minNode(root,
-                           findMinRec(root->left, d, depth+1),
-                           findMinRec(root->right, d, depth+1), d);
+                           findMinRec(root->left, d, depth + 1),
+                           findMinRec(root->right, d, depth + 1), d);
         }
 
-        Node *findMin(Node* root, int d){
+        Node *findMin(Node *root, int d)
+        {
             // Pass current level or depth as 0
             return findMinRec(root, d, 0);
         }
-        Node *deleteNodeRec(Node *root, Point3D &point, int depth){
+        Node *deleteNodeRec(Node *root, Point3D &point, int depth)
+        {
             // Given point is not present
             if (root == nullptr)
                 return nullptr;
-        
+
             // Find dimension of current node
             int cd = depth % dimension;
-        
+
             // If the point to be deleted is present at root
-            if (arePointsSame(root->point, point)){
+            if (arePointsSame(root->point, point))
+            {
                 // 2.b) If right child is not nullptr
-                if (root->right != nullptr){
-                        // Find minimum of root's dimension in right subtree
-                        Node *min = findMin(root->right, cd);
-                        // Copy the minimum to root
-                        copyPoint(root->point, min->point);
-                        // Recursively delete the minimum
-                        root->right = deleteNodeRec(root->right, min->point, depth+1);
-                    }
+                if (root->right != nullptr)
+                {
+                    // Find minimum of root's dimension in right subtree
+                    Node *min = findMin(root->right, cd);
+                    // Copy the minimum to root
+                    copyPoint(root->point, min->point);
+                    // Recursively delete the minimum
+                    root->right = deleteNodeRec(root->right, min->point, depth + 1);
+                }
                 else if (root->left != nullptr) // same as above
-                    {
+                {
                     Node *min = findMin(root->left, cd);
                     copyPoint(root->point, min->point);
-                    root->right = deleteNodeRec(root->left, min->point, depth+1);
-                    root->left = nullptr;
+                    root->right = deleteNodeRec(root->left, min->point, depth + 1);
+                    //root->left = nullptr;
                 }
                 else // If node to be deleted is leaf node
                 {
@@ -328,12 +347,12 @@ namespace kdt
                 }
                 return root;
             }
-        
+
             // 2) If current node doesn't contain point, search downward
             if (point[cd] < root->point[cd])
-                root->left = deleteNodeRec(root->left, point, depth+1);
+                root->left = deleteNodeRec(root->left, point, depth + 1);
             else
-                root->right = deleteNodeRec(root->right, point, depth+1);
+                root->right = deleteNodeRec(root->right, point, depth + 1);
             return root;
         }
     };
