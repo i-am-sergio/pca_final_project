@@ -11,6 +11,16 @@ using namespace kdt;
 using namespace rdr;
 using namespace graph;
 
+void testKmeans()
+{
+    CSVReader reader("pca_result.csv");
+    KMeans kmeans;
+    vector<Point3D> data = reader.readCSV();
+    vector<Point3D> all_centroides = kmeans.obtenerTresPuntosAleatorios(data, 8);
+    vector<vector<Point3D>> clusteres = kmeans.KMeans_def(all_centroides, data);
+    cout << "FINISH\n";
+}
+
 int main(int argc, char **argv)
 {
     if (argc > 1 && std::string(argv[1]) == "--run-tests")
