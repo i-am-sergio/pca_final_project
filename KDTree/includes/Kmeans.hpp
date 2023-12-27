@@ -92,7 +92,7 @@ public:
         //     std::cout << "cluster " << i + 1 << " => " << clusters[i].size() << std::endl;
         vector<Point3D> newCentroides = newCenters(clusters);
         // printVector(newCentroides);
-        double distanceThreshold = 7.3;
+        double distanceThreshold = 8.4;
         double distance = 0.0;
         for (int i = 0; i < all_centroides.size(); ++i)
             distance += EuclideanDistance(all_centroides[i], newCentroides[i]);
@@ -101,7 +101,7 @@ public:
             // std::cout << "Algoritmo convergió. Distancia: " << distance << std::endl;
             return clusters;
         }
-        // std::cout << "Algoritmo no convergió. Distancia: " << distance << std::endl;
+        //std::cout << "Algoritmo no convergió. Distancia: " << distance << std::endl;
         return KMeans_def(newCentroides, all_points);
     }
 };
