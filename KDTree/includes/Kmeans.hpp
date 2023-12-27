@@ -5,15 +5,16 @@
 #include <vector>
 #include <cmath>
 #include <queue>
+#include <ctime>
 #include <iomanip>
 #include <random>
+#include <algorithm>
 
 using namespace std;
 
 class KMeans
 {
 public:
-
     void printVector(const vector<Point3D> &vec)
     {
         std::cout << "Vector Elements: ";
@@ -34,93 +35,73 @@ public:
         }
     }
 
-    int generateRandomInteger(int lowerLimit, int upperLimit)
-    {
-        // Use a random device to seed the random number generator
-        std::random_device rd;
-        // Use the random device to seed the random engine
-        std::mt19937 gen(rd());
-        // Use the uniform distribution to generate a random integer in the specified range
-        std::uniform_int_distribution<int> distribution(lowerLimit, upperLimit);
-        return distribution(gen);
-    }
-
     // obtener 3 centroides random
-    vector<Point3D> obtenerTresPuntosAleatorios(const vector<Point3D> &puntos)
+    std::vector<Point3D> obtenerTresPuntosAleatorios(const std::vector<Point3D> &puntos, int quantity)
     {
         std::vector<Point3D> all_centroides;
-
-        if (puntos.size() < 3)
-        {
+        if (puntos.size() < quantity || quantity < 1)
             return all_centroides;
+        std::mt19937 gen(static_cast<long unsigned int>(12));
+        std::uniform_int_distribution<int> distribution(0, puntos.size() - 1);
+        for (int i = 0; i < quantity; ++i)
+        {
+            int indice = distribution(gen);
+            while (std::find(all_centroides.begin(), all_centroides.end(), puntos[indice]) != all_centroides.end())
+                indice = distribution(gen);
+            all_centroides.push_back(puntos[indice]);
         }
-
-        std::srand(std::time(0));
-
-        int indice1 = generateRandomInteger(0, puntos.size() - 1);
-        int indice2, indice3;
-        do
-        {
-            indice2 = generateRandomInteger(0, puntos.size() - 1);
-        } while (indice2 == indice1);
-
-        do
-        {
-            indice3 = generateRandomInteger(0, puntos.size() - 1);
-        } while (indice3 == indice1 || indice3 == indice2);
-
-        all_centroides.push_back(puntos[indice1]);
-        all_centroides.push_back(puntos[indice2]);
-        all_centroides.push_back(puntos[indice3]);
-        std::cout << "INDICE  1: " << indice1 << std::endl;
-        std::cout << "INDICE  2: " << indice2 << std::endl;
-        std::cout << "INDICE  3: " << indice3 << std::endl;
         return all_centroides;
     }
 
+    vector<Point3D> newCenters(vector<vector<Point3D>> clusteres)
+    {
+        vector<Point3D> newCentroides;
+        for (int i = 0; i < clusteres.size(); i++)
+        {
+            Point3D newCentroide = {0, 0, 0};
+            for (const auto &point : clusteres[i])
+                newCentroide = newCentroide + point;
+            int size = clusteres[i].size();
+            if (size != 0)
+                newCentroide = newCentroide / size;
+            newCentroides.push_back(newCentroide);
+        }
+        return newCentroides;
+    }
 
-
-    vector<vector<Point3D>> KMeans_def(const vector<Point3D> &all_centroides, vector<Point3D> &all_points)
+    vector<vector<Point3D>>
+    KMeans_def(const vector<Point3D> &all_centroides, vector<Point3D> &all_points)
     {
         kdt::KDTree<3> kdtree_centroides;
         for (auto &row : all_centroides)
-        {
             kdtree_centroides.insert(row);
-        }
-        vector<Point3D> cluster_1;
-        vector<Point3D> cluster_2;
-        vector<Point3D> cluster_3;
-        
+        vector<vector<Point3D>> clusters(all_centroides.size());
         for (int i = 0; i < all_points.size(); i++)
         {
             vector<Point3D> num = kdtree_centroides.searchKNN(all_points[i], 1);
-            if (num[0] == all_centroides[0]) 
+            for (int j = 0; j < all_centroides.size(); ++j)
             {
-                cluster_1.push_back(all_points[i]);
+                if (num[0] == all_centroides[j])
+                {
+                    clusters[j].push_back(all_points[i]);
+                    break;
+                }
             }
-            else if (num[0] == all_centroides[1])
-            {
-                cluster_2.push_back(all_points[i]);
-            }
-            else
-            {
-                cluster_3.push_back(all_points[i]);
-            }
-            // printVector(num);
         }
-
-        // printVector(cluster_1);
-        std::cout << "cluster 1 => " << cluster_1.size() << std::endl;
-        // printVector(cluster_2);
-        std::cout << "cluster 2 => " << cluster_2.size() << std::endl;
-        // printVector(cluster_3);
-        std::cout << "cluster 3 => " << cluster_3.size() << std::endl;
-        
-        vector<vector<Point3D>> clusteres;
-        clusteres.push_back(cluster_1);
-        clusteres.push_back(cluster_2);
-        clusteres.push_back(cluster_3);
-
-        return clusteres;
+        // for (int i = 0; i < clusters.size(); ++i)
+        //     std::cout << "cluster " << i + 1 << " => " << clusters[i].size() << std::endl;
+        vector<Point3D> newCentroides = newCenters(clusters);
+        // printVector(newCentroides);
+        double distanceThreshold = 7.3;
+        double distance = 0.0;
+        for (int i = 0; i < all_centroides.size(); ++i)
+            distance += EuclideanDistance(all_centroides[i], newCentroides[i]);
+        if (distance < distanceThreshold)
+        {
+            // std::cout << "Algoritmo convergió. Distancia: " << distance << std::endl;
+            return clusters;
+        }
+        // std::cout << "Algoritmo no convergió. Distancia: " << distance << std::endl;
+        return KMeans_def(newCentroides, all_points);
     }
 };

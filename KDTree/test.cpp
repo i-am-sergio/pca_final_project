@@ -11,6 +11,15 @@ using namespace kdt;
 using namespace rdr;
 using namespace graph;
 
+void testKmeans()
+{
+    CSVReader reader("pca_result.csv");
+    KMeans kmeans;
+    vector<Point3D> data = reader.readCSV();
+    vector<Point3D> all_centroides = kmeans.obtenerTresPuntosAleatorios(data, 8);
+    vector<vector<Point3D>> clusteres = kmeans.KMeans_def(all_centroides, data);
+    cout << "FINISH\n";
+}
 
 int main(int argc, char **argv)
 {
@@ -64,8 +73,8 @@ int main(int argc, char **argv)
             {
                 Grapher grapher;
                 grapher.printKD(kdtree);
-                for(auto &row : _11_variables)
-                    grapher.addVector(0.0,0.0,0.0,row[0],row[1],row[2],"White");
+                for (auto &row : _11_variables)
+                    grapher.addVector(0.0, 0.0, 0.0, row[0], row[1], row[2], "White");
                 grapher.DrawPoints();
                 grapher.DrawLines();
                 grapher.ShowWindow();
