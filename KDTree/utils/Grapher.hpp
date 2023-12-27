@@ -114,6 +114,23 @@ namespace graph
             DrawLinesForColor("Blue", linesBlue);
         }
 
+
+        void addVector(double x1, double y1, double z1, double x2, double y2, double z2, const char *color)
+        {
+            auto lineSource = vtkSmartPointer<vtkLineSource>::New();
+            lineSource->SetPoint1(x1, y1, z1);
+            lineSource->SetPoint2(x2, y2, z2);
+            lineSource->Update();
+            auto lineMapper = vtkSmartPointer<vtkPolyDataMapper>::New();
+            lineMapper->SetInputConnection(lineSource->GetOutputPort());
+            auto lineActor = vtkSmartPointer<vtkActor>::New();
+            lineActor->SetMapper(lineMapper);
+            lineActor->GetProperty()->SetColor(colors->GetColor3d(color).GetData());
+            renderer->AddActor(lineActor);
+        }
+        
+
+
         void DrawLinesForColor(const char *color, vtkSmartPointer<vtkAppendPolyData> lines)
         {
             auto mapper = vtkSmartPointer<vtkPolyDataMapper>::New();
