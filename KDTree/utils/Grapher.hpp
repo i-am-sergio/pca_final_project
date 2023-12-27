@@ -179,7 +179,7 @@ namespace graph
                        depth == 0 ? currentX : maxX, depth == 1 ? currentY : maxY, depth == 2 ? currentZ : maxZ);
         }
 
-        void printKD(KDTree<3>& kdtree)
+        void printKD(KDTree<3> &kdtree)
         {
             addPointKD(kdtree.getNode());
         }
