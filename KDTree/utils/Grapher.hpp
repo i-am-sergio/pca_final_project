@@ -40,6 +40,10 @@ namespace graph
         vtkSmartPointer<vtkAppendPolyData> linesGreen;
         vtkSmartPointer<vtkAppendPolyData> linesRed;
 
+        vtkSmartPointer<vtkPoints> points1;
+        vtkSmartPointer<vtkPoints> points2;
+        vtkSmartPointer<vtkPoints> points3;
+
     public:
         Grapher()
         {
@@ -53,6 +57,9 @@ namespace graph
             linesBlue = vtkSmartPointer<vtkAppendPolyData>::New();
             linesGreen = vtkSmartPointer<vtkAppendPolyData>::New();
             linesRed = vtkSmartPointer<vtkAppendPolyData>::New();
+            points1 = vtkSmartPointer<vtkPoints>::New();
+            points2 = vtkSmartPointer<vtkPoints>::New();
+            points3 = vtkSmartPointer<vtkPoints>::New();
             DrawLine(-20.0, 0.0, 0.0, 20.0, 0.0, 0.0, "Red");   // X
             DrawLine(0.0, -20.0, 0.0, 0.0, 20.0, 0.0, "Green"); // Y
             DrawLine(0.0, 0.0, -20.0, 0.0, 0.0, 20.0, "Blue");  // Z
@@ -182,6 +189,64 @@ namespace graph
         void printKD(KDTree<3>& kdtree)
         {
             addPointKD(kdtree.getNode());
+        }
+
+
+        void printClusteres(vector<vector<Point3D>>& clusteres){
+            vector<Point3D> cluster1 = clusteres[0];
+            vector<Point3D> cluster2 = clusteres[1];
+            vector<Point3D> cluster3 = clusteres[2];
+
+            cout<<"size cluster 1: "<<cluster1.size()<<endl;
+            cout<<"size cluster 2: "<<cluster2.size()<<endl;
+            cout<<"size cluster 3: "<<cluster3.size()<<endl;
+
+
+            for (auto &row : cluster1)
+                points1->InsertNextPoint(row[0], row[1], row[2]);
+            for (auto &row : cluster2)
+                points2->InsertNextPoint(row[0], row[1], row[2]);
+            for (auto &row : cluster3)
+                points3->InsertNextPoint(row[0], row[1], row[2]);
+
+            vtkNew<vtkPolyData> polyData1;
+            polyData1->SetPoints(points1);
+            vtkNew<vtkVertexGlyphFilter> vertexFilter1;
+            vertexFilter1->SetInputData(polyData1);
+            vtkNew<vtkPolyDataMapper> mapper1;
+            mapper1->SetInputConnection(vertexFilter1->GetOutputPort());
+            vtkNew<vtkActor> pointActor1;
+            pointActor1->SetMapper(mapper1);
+            pointActor1->GetProperty()->SetColor(colors->GetColor3d("Red").GetData());
+            pointActor1->GetProperty()->SetPointSize(2);
+            renderer->AddActor(pointActor1);
+
+            vtkNew<vtkPolyData> polyData2;
+            polyData2->SetPoints(points2);
+            vtkNew<vtkVertexGlyphFilter> vertexFilter2;
+            vertexFilter2->SetInputData(polyData2);
+            vtkNew<vtkPolyDataMapper> mapper2;
+            mapper2->SetInputConnection(vertexFilter2->GetOutputPort());
+            vtkNew<vtkActor> pointActor2;
+            pointActor2->SetMapper(mapper2);
+            pointActor2->GetProperty()->SetColor(colors->GetColor3d("Green").GetData());
+            pointActor2->GetProperty()->SetPointSize(2);
+            renderer->AddActor(pointActor2);
+
+            vtkNew<vtkPolyData> polyData3;
+            polyData3->SetPoints(points3);
+            vtkNew<vtkVertexGlyphFilter> vertexFilter3;
+            vertexFilter3->SetInputData(polyData3);
+            vtkNew<vtkPolyDataMapper> mapper3;
+            mapper3->SetInputConnection(vertexFilter3->GetOutputPort());
+            vtkNew<vtkActor> pointActor3;
+            pointActor3->SetMapper(mapper3);
+            pointActor3->GetProperty()->SetColor(colors->GetColor3d("Blue").GetData());
+            pointActor3->GetProperty()->SetPointSize(2);
+            renderer->AddActor(pointActor3);
+
+            cout<<"termino printClusteres"<<endl;
+
         }
     };
 

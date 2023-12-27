@@ -39,15 +39,19 @@ int main(int argc, char **argv)
         for (auto &row : data)
             kdtree.insert(row);
 
+        vector<Point3D> all_centroides = kmeans.obtenerTresPuntosAleatorios(data);
+        vector<vector<Point3D>> clusteres = kmeans.KMeans_def(all_centroides, data);
+
         int option;
         do
         {
             std::cout << "Seleccione una opcion:" << std::endl;
             std::cout << "1. Buscar" << std::endl;
-            std::cout << "2. Mostrar KDTree" << std::endl;
-            std::cout << "3. Mostrar (VTK)" << std::endl;
-            std::cout << "4. GTEST" << std::endl;
-            std::cout << "5. Salir" << std::endl;
+            std::cout << "2. Print KDTree" << std::endl;
+            std::cout << "3. Graficar KDTree (VTK)" << std::endl;
+            std::cout << "4. Graficar Clusteres" << std::endl;
+            std::cout << "5. GTEST" << std::endl;
+            std::cout << "6. Salir" << std::endl;
             std::cin >> option;
 
             switch (option)
@@ -73,16 +77,23 @@ int main(int argc, char **argv)
                 break;
             }
             case 4:
+            {
+                Grapher grapher;
+                grapher.printClusteres(clusteres);
+                grapher.ShowWindow();
+                break;
+            }
+            case 5:
                 testing::InitGoogleTest();
                 return RUN_ALL_TESTS();
                 break;
-            case 5:
+            case 6:
                 break;
             default:
                 std::cout << "Opcion invalida, seleccione una opcion valida." << std::endl;
                 break;
             }
-        } while (option != 5);
+        } while (option != 6);
     }
     return 0;
 }
