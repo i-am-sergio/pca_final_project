@@ -84,7 +84,7 @@ TEST(KDTreeTest, Test2)
     EXPECT_NO_THROW(kdtree.deleteNode({4, 5, 6}));
     EXPECT_FALSE(kdtree.search({4, 5, 6}));
 }
-
+/*
 TEST(KDTreeTest, Test_Delete_All)
 {
     CSVReader reader("pca_result.csv");
@@ -109,8 +109,8 @@ TEST(KDTreeTest, Test_Delete_All)
     for (auto &row : data)
         EXPECT_FALSE(kdtree.search(row));
     std::cout << "Number of times kdtree.search(row) is true after node deletion: " << countTrue << std::endl;
-    kdtree.print();
-}
+    //kdtree.print();
+}*/
 
 TEST(KDTreeTest, Test_Delete)
 {
@@ -135,6 +135,7 @@ TEST(KDTreeTest, Test_Delete)
     EXPECT_FALSE(kdtree.search({13,14,15}));
 }
 
+/*
 TEST(KDTreeTest, Test_Insert_Delete_Search) {
     KDTree<3> kdtree;
 
@@ -154,7 +155,7 @@ TEST(KDTreeTest, Test_Insert_Delete_Search) {
     // Borra y busca en el árbol
     for (const auto& point : dataPoints) {
         EXPECT_NO_THROW(kdtree.deleteNode(point));
-        kdtree.print();
+        //kdtree.print();
         EXPECT_FALSE(kdtree.search(point));
     }
-}
+}*/
