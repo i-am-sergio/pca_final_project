@@ -311,7 +311,7 @@ namespace kdt
             // Pass current level or depth as 0
             return findMinRec(root, d, 0);
         }
-        Node *deleteNodeRec(Node *root, Point3D &point, int depth)
+        Node *deleteNodeRec(Node *&root, Point3D &point, int depth)
         {
             // Given point is not present
             if (root == nullptr)
@@ -338,12 +338,12 @@ namespace kdt
                     Node *min = findMin(root->left, cd);
                     copyPoint(root->point, min->point);
                     root->right = deleteNodeRec(root->left, min->point, depth + 1);
-                    //root->left = nullptr;
+                    root->left = nullptr;
                 }
                 else // If node to be deleted is leaf node
                 {
                     delete root;
-                    return nullptr;
+                    root = nullptr;
                 }
                 return root;
             }
