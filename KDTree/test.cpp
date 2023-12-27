@@ -11,19 +11,8 @@ using namespace kdt;
 using namespace rdr;
 using namespace graph;
 
-void testKmeans()
-{
-    CSVReader reader("pca_result.csv");
-    KMeans kmeans;
-    vector<Point3D> data = reader.readCSV();
-    vector<Point3D> all_centroides = kmeans.obtenerTresPuntosAleatorios(data, 8);
-    vector<vector<Point3D>> clusteres = kmeans.KMeans_def(all_centroides, data);
-    cout << "FINISH\n";
-}
-
 int main(int argc, char **argv)
 {
-    testKmeans();
     if (argc > 1 && std::string(argv[1]) == "--run-tests")
     {
         // Ejecutar las pruebas
@@ -39,15 +28,22 @@ int main(int argc, char **argv)
         for (auto &row : data)
             kdtree.insert(row);
 
+        vector<Point3D> all_centroides = kmeans.obtenerTresPuntosAleatorios(data);
+        vector<vector<Point3D>> clusteres = kmeans.KMeans_def(all_centroides, data);
+
+        CSVReader reader2("puntos.csv");
+        vector<Point3D> _11_variables = reader2.readCSV();
+
         int option;
         do
         {
             std::cout << "Seleccione una opcion:" << std::endl;
             std::cout << "1. Buscar" << std::endl;
-            std::cout << "2. Mostrar KDTree" << std::endl;
-            std::cout << "3. Mostrar (VTK)" << std::endl;
-            std::cout << "4. GTEST" << std::endl;
-            std::cout << "5. Salir" << std::endl;
+            std::cout << "2. Print KDTree" << std::endl;
+            std::cout << "3. Graficar KDTree (VTK)" << std::endl;
+            std::cout << "4. Graficar Clusteres" << std::endl;
+            std::cout << "5. GTEST" << std::endl;
+            std::cout << "6. Salir" << std::endl;
             std::cin >> option;
 
             switch (option)
@@ -67,22 +63,31 @@ int main(int argc, char **argv)
             {
                 Grapher grapher;
                 grapher.printKD(kdtree);
+                for (auto &row : _11_variables)
+                    grapher.addVector(0.0, 0.0, 0.0, row[0], row[1], row[2], "White");
                 grapher.DrawPoints();
                 grapher.DrawLines();
                 grapher.ShowWindow();
                 break;
             }
             case 4:
+            {
+                Grapher grapher;
+                grapher.printClusteres(clusteres);
+                grapher.ShowWindow();
+                break;
+            }
+            case 5:
                 testing::InitGoogleTest();
                 return RUN_ALL_TESTS();
                 break;
-            case 5:
+            case 6:
                 break;
             default:
                 std::cout << "Opcion invalida, seleccione una opcion valida." << std::endl;
                 break;
             }
-        } while (option != 5);
+        } while (option != 6);
     }
     return 0;
 }
