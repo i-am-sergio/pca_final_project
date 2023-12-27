@@ -84,33 +84,6 @@ TEST(KDTreeTest, Test2)
     EXPECT_NO_THROW(kdtree.deleteNode({4, 5, 6}));
     EXPECT_FALSE(kdtree.search({4, 5, 6}));
 }
-/*
-TEST(KDTreeTest, Test_Delete_All)
-{
-    CSVReader reader("pca_result.csv");
-    vector<Point3D> data = reader.readCSV();
-    vector<Point3D> data2 = data;
-    KDTree<3> kdtree;
-    for (auto &row : data)
-        EXPECT_NO_THROW(kdtree.insert(row));
-
-    std::random_device rd;
-    std::default_random_engine rng(rd());
-    std::shuffle(data2.begin(), data2.end(), rng);
-    int countTrue = 0;
-    for (auto &row : data2)
-    {
-        EXPECT_NO_THROW(kdtree.deleteNode(row));
-        if (kdtree.search(row))
-        {
-            countTrue++;
-        }
-    }
-    for (auto &row : data)
-        EXPECT_FALSE(kdtree.search(row));
-    std::cout << "Number of times kdtree.search(row) is true after node deletion: " << countTrue << std::endl;
-    //kdtree.print();
-}*/
 
 TEST(KDTreeTest, Test_Delete)
 {
@@ -134,28 +107,3 @@ TEST(KDTreeTest, Test_Delete)
     EXPECT_FALSE(kdtree.search({7,8,9}));
     EXPECT_FALSE(kdtree.search({13,14,15}));
 }
-
-/*
-TEST(KDTreeTest, Test_Insert_Delete_Search) {
-    KDTree<3> kdtree;
-
-    // Configura el generador de números aleatorios
-    std::random_device rd;
-    std::mt19937 gen(rd());
-    std::uniform_real_distribution<double> dist(0.0, 100.0);
-
-    // Inserta 1000 datos aleatorios en el árbol
-    std::vector<std::vector<double>> dataPoints;
-    for (int i = 0; i < 1000; ++i) {
-        std::vector<double> point = {dist(gen), dist(gen), dist(gen)};
-        kdtree.insert(point);
-        dataPoints.push_back(point);
-    }
-
-    // Borra y busca en el árbol
-    for (const auto& point : dataPoints) {
-        EXPECT_NO_THROW(kdtree.deleteNode(point));
-        //kdtree.print();
-        EXPECT_FALSE(kdtree.search(point));
-    }
-}*/
