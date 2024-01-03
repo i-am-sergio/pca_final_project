@@ -69,12 +69,12 @@ namespace kdt
             return kNeighbors;
         }
 
-        priority_queue<pair<double, Node *>> searchKNN2(Point3D point, int k)
-        {
-            k = k + 1;
-            priority_queue<pair<double, Node *>> nearestNeighbors;
-            KNNRecursive(root, point, k, nearestNeighbors, 0);
-            return nearestNeighbors;
+        vector<vector<double>> searchKNN2(vector<double> point, int k) {
+            priority_queue<pair<double, Node*>> nearestNeighbors;
+            KNNRecursive(root,point,k,nearestNeighbors,0);
+            vector<vector<double>> result;
+            result.push_back(nearestNeighbors.top().second->point);
+            return result;
         }
 
         void deleteNode(Point3D point)

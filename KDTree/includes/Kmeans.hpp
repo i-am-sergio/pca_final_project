@@ -36,7 +36,7 @@ public:
     }
 
     // obtener 3 centroides random
-    std::vector<Point3D> obtenerTresPuntosAleatorios(const std::vector<Point3D> &puntos, int quantity)
+    std::vector<Point3D> obtenerCentroidesAleatorios(const std::vector<Point3D> &puntos, int quantity)
     {
         std::vector<Point3D> all_centroides;
         if (puntos.size() < quantity || quantity < 1)
@@ -78,7 +78,7 @@ public:
         vector<vector<Point3D>> clusters(all_centroides.size());
         for (int i = 0; i < all_points.size(); i++)
         {
-            vector<Point3D> num = kdtree_centroides.searchKNN(all_points[i], 1);
+            vector<Point3D> num = kdtree_centroides.searchKNN2(all_points[i], 1);
             for (int j = 0; j < all_centroides.size(); ++j)
             {
                 if (num[0] == all_centroides[j])
@@ -88,10 +88,7 @@ public:
                 }
             }
         }
-        // for (int i = 0; i < clusters.size(); ++i)
-        //     std::cout << "cluster " << i + 1 << " => " << clusters[i].size() << std::endl;
         vector<Point3D> newCentroides = newCenters(clusters);
-        // printVector(newCentroides);
         double distanceThreshold = 8.4;
         double distance = 0.0;
         for (int i = 0; i < all_centroides.size(); ++i)

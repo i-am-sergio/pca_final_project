@@ -48,21 +48,21 @@ add_executable(pca_kdtree
               test.cpp
 )
 
-target_link_libraries(pca_kdtree PRIVATE
-    ${VTK_LIBRARIES}
-    ${GTEST_LIB_DIR}/libgtest.a
-    ${GTEST_LIB_DIR}/libgtest_main.a
-    ${GMOCK_LIB_DIR}/libgmock.a
-    ${GMOCK_LIB_DIR}/libgmock_main.a
-)
-
-# Fedora --------------------------------
 # target_link_libraries(pca_kdtree PRIVATE
 #     ${VTK_LIBRARIES}
-#     ${GTEST_LIBRARY} 
-#     ${GTEST_MAIN_LIBRARY}
+#     ${GTEST_LIB_DIR}/libgtest.a
+#     ${GTEST_LIB_DIR}/libgtest_main.a
+#     ${GMOCK_LIB_DIR}/libgmock.a
+#     ${GMOCK_LIB_DIR}/libgmock_main.a
 # )
-# target_include_directories(pca_kdtree PRIVATE "/usr/src/googletest/googletest/include") # ruta de los encabezados de Google Test
+
+# Fedora --------------------------------
+target_link_libraries(pca_kdtree PRIVATE
+    ${VTK_LIBRARIES}
+    ${GTEST_LIBRARY} 
+    ${GTEST_MAIN_LIBRARY}
+)
+target_include_directories(pca_kdtree PRIVATE "/usr/src/googletest/googletest/include") # ruta de los encabezados de Google Test
 # --------------------------------------
 
 vtk_module_autoinit(
