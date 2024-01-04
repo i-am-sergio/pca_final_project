@@ -29,14 +29,19 @@ pca_impl = PCAImplementation(df, selected_columns)
 pca_impl.apply_pca()
 
 
-# Guardar en un archivo csv
+# Guardar en un archivo csv pca 3D
 folder_path = '../KDTree/'
 if not os.path.exists(folder_path):
     os.makedirs(folder_path)
 csv_path = os.path.join(folder_path, 'pca_result.csv')
 pca_impl.get_df_pca3().to_csv(csv_path, index=False, header=None)
 
-
+# Guardar en un archivo csv pca 2D
+folder_path = '../KDTree/'
+if not os.path.exists(folder_path):
+    os.makedirs(folder_path)
+csv_path = os.path.join(folder_path, 'pca_result_2d.csv')
+pca_impl.get_df_pca2().to_csv(csv_path, index=False, header=None)
 
 
 # Graficar Grafico de correlacion 2D
@@ -121,6 +126,14 @@ plt.show()
 
 explain_varianza = pca_impl.get_explain_varianza()
 explain_varianza_transpose = pca_impl.get_explain_varianza_transpose()
+
+# Cosenos cuadrados
+# cosine_squares = pca_impl.get_cosines_squared_pca2()
+# print("cosine_squares => " , cosine_squares)
+
+# eigen values
+# eigenvalues = pca_impl.get_eigenvalues()
+# print("eigenvalues => " , eigenvalues)
 
 # Representación de la varianza de cada componente
 print("explain_varianza PCA => " , explain_varianza)
